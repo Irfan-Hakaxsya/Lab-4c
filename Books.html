@@ -1,9 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Books Information</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 
@@ -16,5 +17,48 @@
 
     <h2>Genres of All Books</h2>
     <div id="allGenres"></div>
+
+    <script>
+        $(document).ready(function() {
+
+            $.getJSON("books.json", function(data) {
+
+                var firstTitle = data.books[0].title;
+
+                console.log("First Book Title: " + firstTitle);
+
+                $("#firstBook").text(
+                    "First Book Title: " + firstTitle
+                );
+
+                var secondAuthor = data.books[1].author;
+
+                console.log("Second Book Author: " + secondAuthor);
+
+                $("#secondBook").text(
+                    "Second Book Author: " + secondAuthor
+                );
+
+                $.each(data.books, function(index, book) {
+
+                    console.log(
+                        "Genres of " + book.title + ": " +
+                        book.genres.join(", ")
+                    );
+
+                    $("#allGenres").append(
+                        "<p>" + book.title + ": " +
+                        book.genres.join(", ") + "</p>"
+                    );
+
+                });
+
+            }).fail(function() {
+                console.log("Error loading JSON file.");
+                $("#allGenres").text("Unable to load books.json");
+            });
+        });
+    </script>
+
 </body>
 </html>
